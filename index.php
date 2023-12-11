@@ -1,34 +1,44 @@
-<?php
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo Formulário</title>
+    <!-- Inclua o jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
 
-// Recebe o nome e a experiencia do heroi atraves do metodo post no php.
-//Recebe o nome do herói:
-$nome = $_POST['nome'];
-//Recebe a quantidade de experiência do herói:
-$xp = $_POST['xpheroi'];
+<form id="meuForm">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required>
 
-// Converte a entrada para um número
-$xp = intval($xp);
+    <label for="xp">Experiência:</label>
+    <input type="number" id="xp" name="xp" required>
 
-// Estrutura de decisão, determina o nível com base na quantidade de experiência
-if ($xp < 1000) {
-    $nivel = "Ferro";
-} elseif ($xp >= 1001 && $xp <= 2000) {
-    $nivel = "Bronze";
-} elseif ($xp >= 2001 && $xp <= 5000) {
-    $nivel = "Prata";
-} elseif ($xp >= 6001 && $xp <= 7000) {
-    $nivel = "Ouro";
-} elseif ($xp >= 7001 && $xp <= 8000) {
-    $nivel = "Platina";
-} elseif ($xp >= 8001 && $xp <= 9000) {
-    $nivel = "Ascendente";
-} elseif ($xp >= 9001 && $xp <= 10000) {
-    $nivel = "Imortal";
-} else {
-    $nivel = "Radiante";
-}
+    <button type="button" onclick="enviarForm()">Enviar</button>
+</form>
 
-// Exibe a mensagem final
-echo "O Herói de nome $nome está no nível de $nivel\n";
+<div id="resultado"></div>
 
-?>
+<script>
+    function enviarForm() {
+        var nome = $("#nome").val();
+        var xp = $("#xp").val();
+
+        $.ajax({
+            type: "POST",
+            url: "consulta.php",
+            data: {nome: nome, xp: xp},
+            success: function (response) {
+                $("#resultado").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
